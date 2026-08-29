@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<title>محاسبه گر قیمت باتری</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#111827;font-family:Tahoma,Arial,sans-serif}
+main{max-width:520px;margin:auto;padding:22px 16px}.box{background:#fff;border-radius:22px;padding:22px;box-shadow:0 8px 30px #0001}
+h1{text-align:center;font-size:24px;margin:4px 0 8px}.sub{text-align:center;color:#6b7280;font-size:13px;margin-bottom:22px}
+label{display:block;font-weight:700;margin:15px 0 7px}
+input{width:100%;padding:15px;border:1px solid #d1d5db;border-radius:13px;font-size:18px;outline:0}
+input:focus{border-color:#111827}
+button{width:100%;padding:15px;border:0;border-radius:13px;font-size:17px;font-weight:700;margin-top:18px;background:#111827;color:#fff}
+.clear{background:#e5e7eb;color:#111827;margin-top:9px}
+.result{margin-top:20px;padding:18px;border:1px solid #e5e7eb;border-radius:16px;text-align:center;background:#f9fafb}
+.small{color:#6b7280;font-size:13px}.price{font-size:30px;font-weight:800;margin:8px 0}.details{font-size:13px;color:#4b5563;line-height:2}
+</style>
+</head>
+<body><main><section class="box">
+<h1>محاسبه گر قیمت باتری</h1>
+<div class="sub">محاسبه سریع قیمت فروش با سود دلخواه</div>
+
+<label>قیمت دلاری باتری</label>
+<input id="usd" type="number" inputmode="decimal" step="0.01" placeholder="مثلاً 25">
+
+<label>نرخ روز دلار (تومان)</label>
+<input id="rate" type="number" inputmode="numeric" placeholder="مثلاً 100000">
+
+<label>درصد سود</label>
+<input id="profit" type="number" inputmode="decimal" step="0.1" value="45">
+
+<button onclick="calc()">محاسبه قیمت فروش</button>
+<button class="clear" onclick="clearAll()">پاک کردن</button>
+
+<div class="result">
+<div class="small">قیمت فروش نهایی</div>
+<div class="price" id="final">— تومان</div>
+<div class="details" id="details"></div>
+</div>
+</section></main>
+<script>
+const nf=new Intl.NumberFormat('fa-IR');
+function v(id){return parseFloat(document.getElementById(id).value)}
+function calc(){
+ const usd=v('usd'),rate=v('rate'),profit=v('profit');
+ if(!Number.isFinite(usd)||!Number.isFinite(rate)||!Number.isFinite(profit)){
+  alert('لطفاً هر سه مقدار را وارد کنید.');return;
+ }
+ const cost=usd*rate, sale=cost*(1+profit/100);
+ document.getElementById('final').textContent=nf.format(Math.round(sale))+' تومان';
+ document.getElementById('details').innerHTML='قیمت خرید: '+nf.format(Math.round(cost))+' تومان<br>مبلغ سود: '+nf.format(Math.round(sale-cost))+' تومان';
+}
+function clearAll(){
+ ['usd','rate'].forEach(x=>document.getElementById(x).value='');
+ document.getElementById('profit').value='45';
+ document.getElementById('final').textContent='— تومان';
+ document.getElementById('details').textContent='';
+}
+</script>
+</body></html>
